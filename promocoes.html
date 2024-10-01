@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+        <title>Loja Brasileira</title>
+        <link rel="stylesheet" href="styles.css">
+        
+    </head>
+<body>
+
+    <!-- Cabeçalho -->
+    <header>
+        <h1>Loja Brasileira</h1>
+        <p>As melhores promoções do Brasil!</p>
+        <!-- Botão para visualizar o carrinho -->
+        <button id="viewCartButton"><i class="fas fa-shopping-cart"></i> Ver Carrinho</button>
+    </header>
+
+    <!-- Menu de navegação -->
+    <nav>
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="produtos.html">Produtos</a></li>
+            <li><a href="promocoes.html">Promoções</a></li>
+            <li><a href="contato.html">Contato</a></li>
+        </ul>
+    </nav>
+
+    <!-- Conteúdo principal -->
+    <div class="container">
+        <h2>Promoções Imperdíveis</h2>
+        <div class="promotions">
+            <!-- Promoção 1 -->
+            <div class="promotion-card">
+                <img src="https://via.placeholder.com/300x300" alt="Promoção 1">
+                <h2>Promoção 1</h2>
+                <p>Descrição da promoção 1.</p>
+                <p><strong>De R$ 199,90 por R$ 99,90</strong></p>
+                <button class="add-to-cart">Adicionar ao Carrinho</button>
+            </div>
+
+            <!-- Promoção 2 -->
+            <div class="promotion-card">
+                <img src="https://via.placeholder.com/300x300" alt="Promoção 2">
+                <h2>Promoção 2</h2>
+                <p>Descrição da promoção 2.</p>
+                <p><strong>De R$ 299,90 por R$ 149,90</strong></p>
+                <button class="add-to-cart">Adicionar ao Carrinho</button>
+            </div>
+
+            <!-- Promoção 3 -->
+            <div class="promotion-card">
+                <img src="https://via.placeholder.com/300x300" alt="Promoção 3">
+                <h2>Promoção 3</h2>
+                <p>Descrição da promoção 3.</p>
+                <p><strong>De R$ 399,90 por R$ 199,90</strong></p>
+                <button class="add-to-cart">Adicionar ao Carrinho</button>
+            </div>
+
+            <!-- Promoção 4 -->
+            <div class="promotion-card">
+                <img src="https://via.placeholder.com/300x300" alt="Promoção 4">
+                <h2>Promoção 4</h2>
+                <p>Descrição da promoção 4.</p>
+                <p><strong>De R$ 499,90 por R$ 249,90</strong></p>
+                <button class="add-to-cart">Adicionar ao Carrinho</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Evento para adicionar produtos ao carrinho
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const productCard = this.closest('.product-card');
+                const productId = productCard.getAttribute('data-product-id');
+                const productName = productCard.querySelector('h2').textContent;
+                const productPrice = productCard.querySelector('strong').textContent;
+        
+                // Adiciona o produto ao carrinho
+                cart.push({ id: productId, name: productName, price: productPrice });
+                alert(`${productName} adicionado ao carrinho!`);
+            });
+        });
+        
+        // Evento para visualizar o carrinho
+        viewCartButton.addEventListener('click', function() {
+            displayCart();
+            cartModal.style.display = 'flex';
+        });
+        
+        // Evento para fechar o modal do carrinho
+        closeCartButton.addEventListener('click', function() {
+            cartModal.style.display = 'none';
+        });
+        
+        // Função para exibir os itens do carrinho
+        function displayCart() {
+            cartItems.innerHTML = ''; // Limpa o conteúdo atual do carrinho
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p>O carrinho está vazio.</p>';
+                return;
+            }
+        
+            cart.forEach(item => {
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `
+                    <span>${item.name} - ${item.price}</span>
+                    <button onclick="removeFromCart('${item.id}')">Remover</button>
+                `;
+                cartItems.appendChild(cartItem);
+            });
+        }
+        
+        // Função para remover itens do carrinho
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            displayCart();
+        }
+        
+            </script>
+    <!-- Rodapé -->
+    <footer>
+        <p>Loja Brasileira - Todos os direitos reservados &copy; 2024</p>
+    </footer>
+
+</body>
+</html>

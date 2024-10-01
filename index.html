@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <title>Loja Brasileira</title>
+    <link rel="stylesheet" href="styles.css">
+   
+    
+</head>
+<body>
+
+    <!-- Cabeçalho -->
+    <header>
+        <h1>Loja Brasileira</h1>
+        <p>Produtos com a cara do Brasil</p>
+
+        <!-- Formulário de Login -->
+        <div class="login-form" id="loginForm">
+            <form id="login" onsubmit="handleLogin(event)">
+                <input type="text" id="username" placeholder="Usuário" required>
+                <input type="password" id="password" placeholder="Senha" required>
+                <input type="submit" value="Entrar">
+            </form>
+            <p class="login-message" id="loginMessage"></p>
+        </div>
+
+        <!-- Botão de Logout -->
+        <button class="logout-button" id="logoutButton" style="display: none;"> Sair</button>
+        
+        <!-- Botão para visualizar o carrinho -->
+        <button id="viewCartButton"><i class="fas fa-shopping-cart"></i> Ver Carrinho</button>
+    </header>
+
+    <!-- Menu de navegação -->
+    <nav>
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="produtos.html">Produtos</a></li>
+            <li><a href="promocoes.html">Promoções</a></li>
+            <li><a href="contato.html">Contato</a></li>
+        </ul>
+    </nav>
+
+    <!-- Conteúdo principal -->
+    <div class="container">
+        <!-- Seção de Banners -->
+
+        <div class="banner-container">
+            <div class="banner-images">
+                <img src="banner1.jpg" class="banner-image" alt="Imagem 1">
+                <img src="banner2.jpg" class="banner-image" alt="Imagem 2">
+                <img src="banner3.jpg" class="banner-image" alt="Imagem 3">
+                <img src="banner4.jpg" class="banner-image" alt="Imagem 3">
+                <img src="banner5.jpg" class="banner-image" alt="Imagem 3">
+
+            </div>
+            <button id="prevButton" class="nav-button">Anterior</button>
+            <button id="nextButton" class="nav-button">Próximo</button>
+        </div>
+    
+        <script src="script.js"></script>
+
+        <!-- Seção de Produtos Baratos -->
+        <section class="cheap-products">
+            <h2>Produtos Baratos e Imperdíveis</h2>
+            <div class="products">
+                <!-- Produto Barato 1 -->
+                <div class="product-card" data-product-id="1">
+                    <img src="https://via.placeholder.com/300x300" alt="Produto Barato 1">
+                    <h2>Produto Barato 1</h2>
+                    <p>Descrição do produto barato 1.</p>
+                    <p><strong>R$ 49,90</strong></p>
+                    <button class="add-to-cart">Adicionar ao Carrinho</button>
+                </div>
+
+                <!-- Produto Barato 2 -->
+                <div class="product-card" data-product-id="2">
+                    <img src="https://via.placeholder.com/300x300" alt="Produto Barato 2">
+                    <h2>Produto Barato 2</h2>
+                    <p>Descrição do produto barato 2.</p>
+                    <p><strong>R$ 59,90</strong></p>
+                    <button class="add-to-cart">Adicionar ao Carrinho</button>
+                </div>
+
+                <!-- Produto Barato 3 -->
+                <div class="product-card" data-product-id="3">
+                    <img src="https://via.placeholder.com/300x300" alt="Produto Barato 3">
+                    <h2>Produto Barato 3</h2>
+                    <p>Descrição do produto barato 3.</p>
+                    <p><strong>R$ 69,90</strong></p>
+                    <button class="add-to-cart">Adicionar ao Carrinho</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Anúncios -->
+        <section class="announcements">
+            <h2>Anúncios</h2>
+            <div class="announcement-cards">
+                <!-- Anúncio 1 -->
+                <div class="announcement-card">
+                    <img src="https://via.placeholder.com/1200x200" alt="Anúncio 1">
+                    <p>Descrição do anúncio 1.</p>
+                </div>
+
+                <!-- Anúncio 2 -->
+                <div class="announcement-card">
+                    <img src="https://via.placeholder.com/1200x200" alt="Anúncio 2">
+                    <p>Descrição do anúncio 2.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Modal de Login -->
+<div class="popup" id="loginPopup" style="display: none;">
+    <div class="popup-content">
+        <h2>Bem-vindo!</h2>
+        <p id="welcomeMessage"></p>
+        <button class="close-popup" onclick="closePopup()" style="background-color: #f44336; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px;">
+            Fechar
+        </button>
+    </div>
+</div>
+   
+    <!-- Modal do Carrinho -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <h2>Carrinho</h2>
+            <div id="cartItems"></div>
+            <button id="closeCartButton">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer>
+        <p>Loja Brasileira - Todos os direitos reservados &copy; 2024</p>
+    </footer>
+<!-- Incluindo o script login.js -->
+<script src="login.js"></script>
+
+</body>
+</html>

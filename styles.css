@@ -1,0 +1,278 @@
+/* Estilos básicos e responsivos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+}
+header {
+    background: linear-gradient(to right, #001f3f, #0052cc, #66ccff); /* Degradê de azul marinho para azul claro */
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+header p {
+    margin-top: 5px;
+}
+.login-form,
+.logout-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+.login-form input[type="text"],
+.login-form input[type="password"],
+.login-form input[type="submit"],
+.logout-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+}
+.login-form input[type="submit"],
+.logout-button {
+    background-color: #001f3f; /* Azul marinho */
+    color: #fff;
+    cursor: pointer;
+}
+.login-form input[type="submit"]:hover,
+.logout-button:hover {
+    background-color: #000a26; /* Tom mais escuro de azul */
+}
+.logout-button {
+    display: none; /* Inicialmente escondido */
+}
+.login-message {
+    color: red;
+    margin-top: 10px;
+}
+nav {
+    background: linear-gradient(to bottom, #66ccff, #e0f7fa); /* Degradê de azul claro para verde claro */
+    padding: 15px;
+}
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+}
+nav ul li {
+    padding: 10px;
+}
+nav ul li a {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+}
+.container {
+    padding: 20px;
+}
+
+/* Estilo do pop-up */
+.popup {
+    display: none; /* Escondido por padrão */
+    position: fixed; /* Fica em cima da tela */
+    z-index: 1; /* Fica na frente */
+    left: 0;
+    top: 0;
+    width: 100%; /* Largura total */
+    height: 100%; /* Altura total */
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo preto com opacidade */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+}
+.popup-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 300px; /* Largura do pop-up */
+}
+.close-popup {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+
+.products,
+.promotions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.product-card,
+.promotion-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    width: 30%;
+    margin-bottom: 20px;
+    background: linear-gradient(to bottom right, #ffffff, #f0f8ff); /* Degradê de branco para azul claro */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.product-card img,
+.promotion-card img {
+    width: 100%;
+    height: auto;
+}
+.product-card h2,
+.promotion-card h2 {
+    font-size: 1.5rem;
+    color: #0052cc; /* Azul claro */
+    margin: 10px 0;
+}
+.product-card p,
+.promotion-card p {
+    font-size: 1rem;
+    margin: 10px 0;
+}
+.product-card button,
+.promotion-card button,
+.contact-form input[type="submit"] {
+    background-color: #001f3f; /* Azul marinho */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+.product-card button:hover,
+.promotion-card button:hover,
+.contact-form input[type="submit"]:hover {
+    background-color: #000a26; /* Tom mais escuro de azul */
+}
+
+/* Estilos para o formulário de contato */
+.contact-form {
+    margin-bottom: 40px;
+    padding: 20px;
+    border: 1px solid #000; /* Borda preta fina */
+    border-radius: 5px;
+    background: linear-gradient(to right, #ffffff, #e0f7fa); /* Degradê de branco para verde claro */
+    max-width: 600px;
+    margin: 0 auto; /* Centraliza o formulário na página */
+}
+.contact-form h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center; /* Centraliza o título do formulário */
+}
+.contact-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+    width: calc(100% - 22px); /* Ajusta a largura para considerar o padding e border */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.contact-form textarea {
+    resize: vertical; /* Permite redimensionar verticalmente */
+}
+.contact-message {
+    margin-top: 10px;
+    text-align: center; /* Centraliza a mensagem de sucesso */
+}
+/* PARTE DO BANNER */
+
+/* Ajustes para o Banner */
+.banner-container {
+    width: 100%; /* Define a largura como 100% do contêiner pai */
+    height: 300px; /* Mantém a altura */
+    overflow: hidden;
+    position: relative; /* Necessário para posicionar os botões de navegação */
+    border: none;
+}
+
+.banner-images {
+    display: flex; /* Alinha as imagens lado a lado */
+    transition: transform 0.5s ease-in-out;
+}
+
+.banner-image {
+    flex-shrink: 0; /* Evita que as imagens encolham */
+    width: 100%; /* Define a largura como 100% do contêiner pai */
+    height: auto; /* Mantém a proporção da imagem */
+    max-height: 300px; /* Limita a altura máxima */
+}
+
+.nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 10;
+}
+
+#prevButton {
+    left: 10px;
+}
+
+#nextButton {
+    right: 10px;
+}
+
+
+/* Estilos para o modal do carrinho */
+.cart-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.cart-content {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+}
+
+/* Ajuste para a seção de anúncios */
+.announcement-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.announcement-card {
+    width: 100%;
+    margin: 10px 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+footer {
+    background: linear-gradient(to left, #001f3f, #66ccff); /* Degradê do azul marinho ao azul claro */
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+}
