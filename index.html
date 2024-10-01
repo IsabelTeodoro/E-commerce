@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-    <title>Loja Brasileira</title>
+    <title>Loja de Tenis</title>
     <link rel="stylesheet" href="styles.css">
    
     
@@ -15,8 +15,15 @@
 
     <!-- Cabeçalho -->
     <header>
-        <h1>Loja Brasileira</h1>
-        <p>Produtos com a cara do Brasil</p>
+        <h1>Pulse</h1>
+        <p>Onde a moda e o conforto se encontram!</p>
+
+         <!-- Botão para visualizar o carrinho -->
+        <!--button id="viewCartButton" class="cart-button"><i class="fas fa-shopping-cart"></i> Ver Carrinho</button-->
+        <button id="viewCartButton" class="cart-button">
+            <i class="fas fa-shopping-cart"></i> Ver Carrinho
+        </button>
+
 
         <!-- Formulário de Login -->
         <div class="login-form" id="loginForm">
@@ -29,10 +36,10 @@
         </div>
 
         <!-- Botão de Logout -->
-        <button class="logout-button" id="logoutButton" style="display: none;"> Sair</button>
+        <button class="logout-button" id="logoutButton" style="display: none;"> Sair</button><br>
         
         <!-- Botão para visualizar o carrinho -->
-        <button id="viewCartButton"><i class="fas fa-shopping-cart"></i> Ver Carrinho</button>
+        <!--button id="viewCartButton"><i class="fas fa-shopping-cart"></i> Ver Carrinho</button-->
     </header>
 
     <!-- Menu de navegação -->
@@ -97,6 +104,9 @@
             </div>
         </section>
 
+        <script src="carrinho.js"></script>
+
+
         <!-- Seção de Anúncios -->
         <section class="announcements">
             <h2>Anúncios</h2>
@@ -117,16 +127,14 @@
 
     </div>
 
-    <!-- Modal de Login -->
-<div class="popup" id="loginPopup" style="display: none;">
+
+<div id="loginPopup" class="popup" style="display: none;">
     <div class="popup-content">
-        <h2>Bem-vindo!</h2>
-        <p id="welcomeMessage"></p>
-        <button class="close-popup" onclick="closePopup()" style="background-color: #f44336; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px;">
-            Fechar
-        </button>
+        <h2 id="welcomeMessage"></h2>
+        <button class="close-popup" onclick="closePopup()">Fechar</button>
     </div>
 </div>
+
    
     <!-- Modal do Carrinho -->
     <div class="cart-modal" id="cartModal">
