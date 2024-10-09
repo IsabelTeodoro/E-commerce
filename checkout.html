@@ -5,19 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Finalizar Compra - Loja Pulse</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link para o seu CSS -->
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bwip-js@2.1.2/bwip-js.min.js"></script> <!-- Biblioteca para código de barras -->
     <style>
         #qrCodeContainer {
-            display: none; /* Esconder o QR Code inicialmente */
+            display: none;
             margin-top: 20px;
+            text-align: center; /* Centraliza o conteúdo do container */
         }
-        .qr-code {
-            text-align: center;
+    
+        #qrCode {
+            display: inline-block; /* Garante que o QR Code se alinhe no centro */
         }
         #creditCardFields, #debitCardFields, #installmentOptions {
-            display: none; /* Ocultar campos inicialmente */
+            display: none;
             margin-top: 15px;
         }
     </style>
@@ -54,13 +58,13 @@
             <h3>Método de Pagamento</h3>
             <label for="paymentMethod">Selecione o método de pagamento:</label>
             <select id="paymentMethod" name="paymentMethod" required>
+                <option value="">Selecione...</option>
                 <option value="credit">Cartão de Crédito</option>
                 <option value="debit">Cartão de Débito</option>
                 <option value="pix">Pix</option>
                 <option value="boleto">Boleto Bancário</option>
             </select>
 
-            <!-- Opção de selecionar o número de parcelas (apenas para crédito) -->
             <div id="installmentOptions">
                 <label for="installments">Selecione o número de parcelas (máximo 5):</label>
                 <select id="installments" name="installments">
@@ -76,31 +80,31 @@
             <div id="creditCardFields">
                 <h4>Preencha os dados do Cartão de Crédito:</h4>
                 <label for="cardNumber">Número do Cartão:</label>
-                <input type="text" id="cardNumber" name="cardNumber" required>
+                <input type="text" id="cardNumber" name="cardNumber">
 
                 <label for="cardHolder">Nome no Cartão:</label>
-                <input type="text" id="cardHolder" name="cardHolder" required>
+                <input type="text" id="cardHolder" name="cardHolder">
 
                 <label for="expiryDate">Data de Validade (MM/AA):</label>
-                <input type="text" id="expiryDate" name="expiryDate" required>
+                <input type="text" id="expiryDate" name="expiryDate">
 
                 <label for="cvv">CVV:</label>
-                <input type="text" id="cvv" name="cvv" required>
+                <input type="text" id="cvv" name="cvv">
             </div>
 
             <div id="debitCardFields">
                 <h4>Preencha os dados do Cartão de Débito:</h4>
                 <label for="debitCardNumber">Número do Cartão:</label>
-                <input type="text" id="debitCardNumber" name="debitCardNumber" required>
+                <input type="text" id="debitCardNumber" name="debitCardNumber">
 
                 <label for="debitCardHolder">Nome no Cartão:</label>
-                <input type="text" id="debitCardHolder" name="debitCardHolder" required>
+                <input type="text" id="debitCardHolder" name="debitCardHolder">
 
                 <label for="debitExpiryDate">Data de Validade (MM/AA):</label>
-                <input type="text" id="debitExpiryDate" name="debitExpiryDate" required>
+                <input type="text" id="debitExpiryDate" name="debitExpiryDate">
 
                 <label for="debitCvv">CVV:</label>
-                <input type="text" id="debitCvv" name="debitCvv" required>
+                <input type="text" id="debitCvv" name="debitCvv">
             </div>
 
             <input type="submit" value="Confirmar Pedido">
@@ -128,7 +132,7 @@
             cartItems.forEach(item => {
                 const itemElement = document.createElement('div');
                 itemElement.classList.add('cart-item');
-                itemElement.innerHTML = `<span>${item.name} - ${item.price}</span>`;
+                itemElement.innerHTML = `<span>${item.name} - R$ ${item.price}</span>`;
                 cartSummary.appendChild(itemElement);
             });
         }
@@ -153,20 +157,64 @@
             }
         });
 
-        // Adiciona mensagem de confirmação e gera QR Code para Pix
+        // Evento de submit para o formulário
         const deliveryForm = document.getElementById('deliveryForm');
-        deliveryForm.addEventListener('submit', function(event) {
-            event.preventDefault();
+        deliveryForm.addEventListener('submit', async function(event) {
+            event.preventDefault(); // Evita o envio padrão
+
             const paymentMethodValue = paymentMethod.value;
 
             if (paymentMethodValue === 'pix') {
                 const qrCodeContainer = document.getElementById('qrCodeContainer');
                 const qrCodeElement = document.getElementById('qrCode');
                 qrCodeElement.innerHTML = '';
+                
+                // Gera o código PIX
                 const pixCode = '00020101021126780014BR.GOV.BCB.PIX0136+55219876543250004000053039865406Test Loja Pulse6304ABC1';
-                $(qrCodeElement).qrcode({ text: pixCode, width: 256, height: 256 });
+                
+                // Gera o QR Code usando a biblioteca QRCode
+                new QRCode(qrCodeElement, {
+                    text: pixCode,
+                    width: 256,
+                    height: 256
+                });
+
                 qrCodeContainer.style.display = 'block';
                 alert('Pedido confirmado! Escaneie o QR Code para pagamento via Pix.');
+            } else if (paymentMethodValue === 'boleto') {
+                const name = document.getElementById('name').value; // Obtém o nome do formulário
+                const totalAmount = cartItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2); // Calcula o total
+                const dueDate = new Date();
+                dueDate.setDate(dueDate.getDate() + 30); // Define a data de vencimento para 30 dias a partir de hoje
+
+                alert('O boleto está sendo gerado...');
+
+                // Gera o código de barras usando bwip-js
+                const barcodeCanvas = document.createElement('canvas');
+                BWIPJS.render({
+                    bcid: 'code128',     // Tipo do código de barras
+                    text: `123456789012345678901234567890123456789012`, // Seu código de barras aqui
+                    scale: 3,            // Escala do código de barras
+                    height: 10,          // Altura do código de barras
+                    includetext: true,   // Incluir texto abaixo do código de barras
+                    textxalign: 'center' // Alinhamento do texto
+                }, async function (err) {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
+
+                    // Gera o PDF do boleto
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF();
+                    pdf.text(`Nome: ${name}`, 10, 10);
+                    pdf.text(`Valor: R$ ${totalAmount}`, 10, 20);
+                    pdf.text(`Data de Vencimento: ${dueDate.toLocaleDateString()}`, 10, 30);
+                    pdf.addImage(barcodeCanvas.toDataURL('image/png'), 'PNG', 10, 40, 180, 40); // Adiciona o código de barras ao PDF
+                    pdf.save(`boleto_${name}.pdf`); // Salva o PDF
+                });
+
+                alert('Pedido confirmado! O boleto será gerado e baixado.');
             } else {
                 alert('Pedido confirmado! Obrigado por comprar conosco.');
             }
