@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Finalizar Compra - Loja Pulse</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link para o seu CSS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+    <style>
+        #qrCodeContainer {
+            display: none; /* Esconder o QR Code inicialmente */
+            margin-top: 20px;
+        }
+        .qr-code {
+            text-align: center;
+        }
+        #creditCardFields, #debitCardFields, #installmentOptions {
+            display: none; /* Ocultar campos inicialmente */
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cabeçalho -->
+    <header>
+        <h1>Loja Pulse</h1>
+        <p>Finalize sua compra!</p>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <div class="contact-form">
+        <h2>Itens no Carrinho</h2>
+        <div id="cartItems">
+            <!-- Os itens do carrinho serão exibidos aqui -->
+        </div>
+
+        <h3>Informações de Entrega</h3>
+        <form id="deliveryForm">
+            <label for="name">Nome Completo:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="address">Endereço:</label>
+            <input type="text" id="address" name="address" required>
+
+            <label for="city">Cidade:</label>
+            <input type="text" id="city" name="city" required>
+
+            <label for="postalCode">CEP:</label>
+            <input type="text" id="postalCode" name="postalCode" required>
+
+            <h3>Método de Pagamento</h3>
+            <label for="paymentMethod">Selecione o método de pagamento:</label>
+            <select id="paymentMethod" name="paymentMethod" required>
+                <option value="credit">Cartão de Crédito</option>
+                <option value="debit">Cartão de Débito</option>
+                <option value="pix">Pix</option>
+                <option value="boleto">Boleto Bancário</option>
+            </select>
+
+            <!-- Opção de selecionar o número de parcelas (apenas para crédito) -->
+            <div id="installmentOptions">
+                <label for="installments">Selecione o número de parcelas (máximo 5):</label>
+                <select id="installments" name="installments">
+                    <option value="1">1x sem juros</option>
+                    <option value="2">2x sem juros</option>
+                    <option value="3">3x sem juros</option>
+                    <option value="4">4x sem juros</option>
+                    <option value="5">5x sem juros</option>
+                </select>
+            </div>
+
+            <!-- Campos para os dados do cartão de crédito e débito -->
+            <div id="creditCardFields">
+                <h4>Preencha os dados do Cartão de Crédito:</h4>
+                <label for="cardNumber">Número do Cartão:</label>
+                <input type="text" id="cardNumber" name="cardNumber" required>
+
+                <label for="cardHolder">Nome no Cartão:</label>
+                <input type="text" id="cardHolder" name="cardHolder" required>
+
+                <label for="expiryDate">Data de Validade (MM/AA):</label>
+                <input type="text" id="expiryDate" name="expiryDate" required>
+
+                <label for="cvv">CVV:</label>
+                <input type="text" id="cvv" name="cvv" required>
+            </div>
+
+            <div id="debitCardFields">
+                <h4>Preencha os dados do Cartão de Débito:</h4>
+                <label for="debitCardNumber">Número do Cartão:</label>
+                <input type="text" id="debitCardNumber" name="debitCardNumber" required>
+
+                <label for="debitCardHolder">Nome no Cartão:</label>
+                <input type="text" id="debitCardHolder" name="debitCardHolder" required>
+
+                <label for="debitExpiryDate">Data de Validade (MM/AA):</label>
+                <input type="text" id="debitExpiryDate" name="debitExpiryDate" required>
+
+                <label for="debitCvv">CVV:</label>
+                <input type="text" id="debitCvv" name="debitCvv" required>
+            </div>
+
+            <input type="submit" value="Confirmar Pedido">
+        </form>
+
+        <!-- Container para o QR Code -->
+        <div id="qrCodeContainer" class="qr-code">
+            <h4>Escaneie o QR Code para pagamento via Pix:</h4>
+            <div id="qrCode"></div>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer>
+        <p>Loja Brasileira - Todos os direitos reservados &copy; 2024</p>
+    </footer>
+
+    <script>
+        // Exibe o resumo dos itens no carrinho
+        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartSummary = document.getElementById('cartItems');
+        if (cartItems.length === 0) {
+            cartSummary.innerHTML = '<p>O carrinho está vazio.</p>';
+        } else {
+            cartItems.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('cart-item');
+                itemElement.innerHTML = `<span>${item.name} - ${item.price}</span>`;
+                cartSummary.appendChild(itemElement);
+            });
+        }
+
+        // Exibe campos conforme método de pagamento selecionado
+        const paymentMethod = document.getElementById('paymentMethod');
+        const creditCardFields = document.getElementById('creditCardFields');
+        const debitCardFields = document.getElementById('debitCardFields');
+        const installmentOptions = document.getElementById('installmentOptions');
+
+        paymentMethod.addEventListener('change', function() {
+            creditCardFields.style.display = 'none';
+            debitCardFields.style.display = 'none';
+            installmentOptions.style.display = 'none';
+            document.getElementById('qrCodeContainer').style.display = 'none';
+
+            if (this.value === 'credit') {
+                creditCardFields.style.display = 'block';
+                installmentOptions.style.display = 'block';
+            } else if (this.value === 'debit') {
+                debitCardFields.style.display = 'block';
+            }
+        });
+
+        // Adiciona mensagem de confirmação e gera QR Code para Pix
+        const deliveryForm = document.getElementById('deliveryForm');
+        deliveryForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const paymentMethodValue = paymentMethod.value;
+
+            if (paymentMethodValue === 'pix') {
+                const qrCodeContainer = document.getElementById('qrCodeContainer');
+                const qrCodeElement = document.getElementById('qrCode');
+                qrCodeElement.innerHTML = '';
+                const pixCode = '00020101021126780014BR.GOV.BCB.PIX0136+55219876543250004000053039865406Test Loja Pulse6304ABC1';
+                $(qrCodeElement).qrcode({ text: pixCode, width: 256, height: 256 });
+                qrCodeContainer.style.display = 'block';
+                alert('Pedido confirmado! Escaneie o QR Code para pagamento via Pix.');
+            } else {
+                alert('Pedido confirmado! Obrigado por comprar conosco.');
+            }
+        });
+    </script>
+
+</body>
+</html>
