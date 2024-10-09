@@ -160,6 +160,12 @@ nav ul li a {
     background-color: #000a26; /* Tom mais escuro de azul */
 }
 
+
+
+
+
+
+
 /* Estilos para o formulário de contato */
 .contact-form {
     margin-bottom: 40px;
@@ -286,26 +292,40 @@ nav ul li a {
     border-radius: 5px; /* Bordas arredondadas */
 }
 
+
+
 /* Ajuste para a seção de anúncios */
 .announcement-cards {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
-    margin: 0;
-    padding: 0;
+    margin: 0; /* Remove a margem para evitar espaço extra */
 }
+
 .announcement-card {
-    width: 100%;
-    margin: 10px 0;
-    padding: 0;
-    box-sizing: border-box;
+    width: 100%; /* Mantém o cartão em 100% da largura */
+    height: 40vh; /* Define a altura do cartão como 40% da altura da janela */
+    margin: 10px 0; /* Margem vertical controlada */
+    overflow: hidden; /* Garante que o conteúdo não ultrapasse o cartão */
+}
+
+/* Estilo para vídeos */
+.announcement-card video {
+    width: 100%; /* O vídeo ocupa toda a largura do cartão */
+    height: 100%; /* O vídeo ocupa toda a altura do cartão */
+    object-fit: cover; /* Cobre o espaço do cartão, mantendo a proporção */
+    display: block; /* Remove o espaço em branco abaixo do vídeo */
 }
 
 footer {
     background: linear-gradient(to left, #001f3f, #66ccff); /* Degradê do azul marinho ao azul claro */
     color: #fff;
     text-align: center;
-    padding: 20px;
-    margin-top: 20px;
+    padding: 20px; /* Pode ajustar o preenchimento conforme necessário */
+    margin: 0; /* Remove margens para que ocupe toda a largura */
+    width: 100%; /* Define a largura como 100% */
+    position: relative; /* Garante que ele fique posicionado corretamente na página */
+    left: 0; /* Alinha ao lado esquerdo da tela */
 }
+
