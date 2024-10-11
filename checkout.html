@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bwip-js@2.1.2/bwip-js.min.js"></script> <!-- Biblioteca para código de barras -->
+    <script src="https://cdn.rawgit.com/metafloor/bwip-js/master/bwip-js.min.js"></script>
+
     <style>
         #qrCodeContainer {
             display: none;
@@ -181,45 +182,81 @@
 
                 qrCodeContainer.style.display = 'block';
                 alert('Pedido confirmado! Escaneie o QR Code para pagamento via Pix.');
-            } else if (paymentMethodValue === 'boleto') {
+            }else if (paymentMethodValue === 'boleto') {
+                // Apenas gera o PDF com os dados do endereço e itens do carrinho
                 const name = document.getElementById('name').value; // Obtém o nome do formulário
-                const totalAmount = cartItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2); // Calcula o total
-                const dueDate = new Date();
-                dueDate.setDate(dueDate.getDate() + 30); // Define a data de vencimento para 30 dias a partir de hoje
-
+                const address = document.getElementById('address').value; // Obtém o endereço
+                const city = document.getElementById('city').value; // Obtém a cidade
+                const postalCode = document.getElementById('postalCode').value; // Obtém o CEP
+            
                 alert('O boleto está sendo gerado...');
-
-                // Gera o código de barras usando bwip-js
-                const barcodeCanvas = document.createElement('canvas');
-                BWIPJS.render({
-                    bcid: 'code128',     // Tipo do código de barras
-                    text: `123456789012345678901234567890123456789012`, // Seu código de barras aqui
-                    scale: 3,            // Escala do código de barras
-                    height: 10,          // Altura do código de barras
-                    includetext: true,   // Incluir texto abaixo do código de barras
-                    textxalign: 'center' // Alinhamento do texto
-                }, async function (err) {
-                    if (err) {
-                        console.error(err);
-                        return;
-                    }
-
-                    // Gera o PDF do boleto
-                    const { jsPDF } = window.jspdf;
-                    const pdf = new jsPDF();
-                    pdf.text(`Nome: ${name}`, 10, 10);
-                    pdf.text(`Valor: R$ ${totalAmount}`, 10, 20);
-                    pdf.text(`Data de Vencimento: ${dueDate.toLocaleDateString()}`, 10, 30);
-                    pdf.addImage(barcodeCanvas.toDataURL('image/png'), 'PNG', 10, 40, 180, 40); // Adiciona o código de barras ao PDF
-                    pdf.save(`boleto_${name}.pdf`); // Salva o PDF
+            
+                // Gera o PDF
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF();
+            
+                // Desenha a tabela para os dados de entrega
+                const startY = 10;
+                const cellHeight = 10;
+                const tableWidth = 180;
+            
+                // Cabeçalho da tabela
+                pdf.rect(10, startY, tableWidth, cellHeight); // Tabela principal
+                pdf.text("Dados de Entrega", 12, startY + 7); // Título da tabela
+            
+                // Linhas de dados
+                const deliveryData = [
+                    { label: 'Nome', value: name },
+                    { label: 'Endereço', value: address },
+                    { label: 'Cidade', value: city },
+                    { label: 'CEP', value: postalCode }
+                ];
+            
+                deliveryData.forEach((data, index) => {
+                    const y = startY + cellHeight + (index * cellHeight);
+                    pdf.rect(10, y, tableWidth, cellHeight); // Linha da tabela
+                    pdf.text(data.label, 12, y + 7); // Label
+                    pdf.text(data.value, 100, y + 7); // Valor
                 });
-
-                alert('Pedido confirmado! O boleto será gerado e baixado.');
-            } else {
-                alert('Pedido confirmado! Obrigado por comprar conosco.');
+            
+                // Adiciona os itens do carrinho ao PDF
+                const itemsStartY = startY + (deliveryData.length + 1) * cellHeight;
+                pdf.text(`\nItens no Carrinho:`, 10, itemsStartY);
+            
+                // Adiciona uma linha em branco para criar espaço
+                pdf.text('', 10, itemsStartY + 10);  // Linha em branco
+            
+                // Desenha a tabela para os itens do carrinho
+                const itemsTableStartY = itemsStartY + 20;
+                pdf.rect(10, itemsTableStartY, tableWidth, cellHeight); // Tabela principal para itens
+                pdf.text("Itens", 12, itemsTableStartY + 7); // Título da tabela
+            
+                cartItems.forEach((item, index) => {
+                    const itemY = itemsTableStartY + cellHeight + (index * cellHeight);
+                    pdf.rect(10, itemY, tableWidth, cellHeight); // Linha da tabela
+                    pdf.text(`${index + 1}. ${item.name}`, 12, itemY + 7); // Nome do item
+                    pdf.text(`R$ ${item.price}`, 100, itemY + 7); // Preço do item
+                });
+                
+            
+                // Número do código de barras
+                const barcodeNumber = '12345678901234567890'; // Substitua por seu número de código de barras
+                const barcodeY = itemsTableStartY + (cartItems.length + 1) * cellHeight + 20;  // Posição Y abaixo dos itens
+            
+                // Adiciona o número do código de barras ao PDF
+                pdf.text(`Código de Barras: ${barcodeNumber}`, 10, barcodeY);
+            
+                // Linha de caracteres abaixo do código de barras
+                const lineText = 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII';
+                const lineY = barcodeY + 10;  // Posição Y para a linha de caracteres
+                pdf.text(lineText, 10, lineY); // Adiciona a linha de caracteres ao PDF
+            
+                // Salva o PDF como um arquivo
+                pdf.save(`informacoes_entrega_${name}.pdf`);
+            
+                alert('Pedido confirmado! O PDF com os dados de entrega, os itens da compra e o código de barras foi gerado e baixado.');
             }
         });
     </script>
-
 </body>
 </html>
