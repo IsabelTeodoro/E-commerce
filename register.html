@@ -5,17 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Cadastro de Usuário - Loja de Tênis</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Usando o mesmo CSS da index -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- Cabeçalho -->
     <header>
         <h1>Pulse</h1>
         <p>Onde a moda e o conforto se encontram!</p>
     </header>
 
-    <!-- Formulário de Cadastro -->
     <div class="register-form" id="registerForm" style="max-width: 400px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px; border: 1px solid #ddd;">
         <h2 style="text-align: center;">Cadastro de Usuário</h2>
         <form id="register" onsubmit="handleRegister(event)">
@@ -27,13 +25,15 @@
         <button type="button" onclick="goBackToLogin()" style="width: 100%; padding: 10px; background-color: #ddd; cursor: pointer; margin-top: 10px;">Voltar para Login</button>
     </div>
 
-    <!-- Script JavaScript que cuida do cadastro -->
     <script>
         function handleRegister(event) {
             event.preventDefault();
 
             const newUsername = document.getElementById("newUsername").value;
             const newPassword = document.getElementById("newPassword").value;
+
+            // Testar se o botão está funcionando corretamente
+            console.log('Botão de cadastro pressionado');
 
             fetch('register.php', {
                 method: 'POST',
@@ -45,7 +45,12 @@
                     password: newPassword
                 }),
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro na resposta da rede: ' + response.status);
+                }
+                return response.json();
+            })
             .then(data => {
                 const registerMessage = document.getElementById("registerMessage");
                 if (data.success) {
@@ -59,11 +64,11 @@
                 }
             })
             .catch(error => {
-                console.error('Erro:', error);
+                const registerMessage = document.getElementById("registerMessage");
+                registerMessage.innerText = 'Erro de rede: ' + error.message;
             });
         }
 
-        // Função para voltar à tela de login
         function goBackToLogin() {
             window.location.href = 'index.html';
         }
