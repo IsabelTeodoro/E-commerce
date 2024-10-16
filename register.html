@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cadastro de Usuário - Loja de Tênis</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Usando o mesmo CSS da index -->
+</head>
+<body>
+
+    <!-- Cabeçalho -->
+    <header>
+        <h1>Pulse</h1>
+        <p>Onde a moda e o conforto se encontram!</p>
+    </header>
+
+    <!-- Formulário de Cadastro -->
+    <div class="register-form" id="registerForm" style="max-width: 400px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px; border: 1px solid #ddd;">
+        <h2 style="text-align: center;">Cadastro de Usuário</h2>
+        <form id="register" onsubmit="handleRegister(event)">
+            <input type="text" id="newUsername" placeholder="Novo Usuário" required style="width: 100%; padding: 10px; margin-bottom: 10px;">
+            <input type="password" id="newPassword" placeholder="Nova Senha" required style="width: 100%; padding: 10px; margin-bottom: 10px;">
+            <input type="submit" value="Cadastrar" style="width: 100%; padding: 10px; background-color: #333; color: #fff; cursor: pointer;">
+        </form>
+        <p class="register-message" id="registerMessage" style="color: red; text-align: center;"></p>
+        <button type="button" onclick="goBackToLogin()" style="width: 100%; padding: 10px; background-color: #ddd; cursor: pointer; margin-top: 10px;">Voltar para Login</button>
+    </div>
+
+    <!-- Script JavaScript que cuida do cadastro -->
+    <script>
+        function handleRegister(event) {
+            event.preventDefault();
+
+            const newUsername = document.getElementById("newUsername").value;
+            const newPassword = document.getElementById("newPassword").value;
+
+            fetch('register.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: newUsername,
+                    password: newPassword
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const registerMessage = document.getElementById("registerMessage");
+                if (data.success) {
+                    registerMessage.innerText = 'Cadastro realizado com sucesso! Redirecionando para login...';
+                    registerMessage.style.color = 'green';
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                } else {
+                    registerMessage.innerText = 'Erro ao realizar cadastro: ' + data.message;
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+        }
+
+        // Função para voltar à tela de login
+        function goBackToLogin() {
+            window.location.href = 'index.html';
+        }
+    </script>
+
+</body>
+</html>
