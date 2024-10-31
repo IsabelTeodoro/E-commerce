@@ -1,232 +1,214 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<html lang="pt-BR">
 
-    <title>Loja de Tenis</title>
-    <link rel="stylesheet" href="styles.css">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loja de Tênis</title>
+  <link rel="stylesheet" href="style.css">
+ 
+
 </head>
+
 <body>
 
-    <!-- Cabeçalho -->
-    <header>
-        <h1>Pulse</h1>
-        <p>Onde a moda e o conforto se encontram!</p>
+  <header>
+    <nav id="nav">
+      <a class="logo" href="/">Loja Pulse</a>
 
-        <!-- Botão para visualizar o carrinho -->
-        <button id="viewCartButton" class="cart-button">
-            <i class="fas fa-shopping-cart"></i> Ver Carrinho
-        </button>
+      <button id="btn"><span id="hbgr"></span></button>
 
+      <ul class="nav-lista">
+        <li><a href="#Sobre">Sobre</a></li>
+        <li><a href="#Produtos">Produtos</a></li>
+        <li><a href="Contato.html">Contatos</a></li>
+        <li><a href="carrinho.html"><img src="carrinho-icon.png" alt="Carrinho" style="width: 24px; height: 24px;"></a></li>
+      </ul>
+   
 
+    <div class="login">
+      <div class="dropdown-content">
+        <form id="login-form">
+          
+          <label for="username" style="background-color: #ECDBBA;">Usuário:</label>
+          <input type="text" id="username" name="username" required>
 
+          <label for="password" style="background-color: #ECDBBA;">Senha:</label>
+          <input type="password" id="password" name="password" required>
 
-
-<!-- Formulário de Login -->
-<div class="login-form" id="loginForm">
-    <form id="login" onsubmit="handleLogin(event)">
-        <input type="text" id="username" placeholder="Usuário" required>
-        <input type="password" id="password" placeholder="Senha" required>
-        <input type="submit" value="Entrar">
-        <button type="button" onclick="redirectToRegister()">Cadastrar</button> <!-- Botão de cadastro redireciona para a página de cadastro -->
-    </form>
-    <p class="login-message" id="loginMessage"></p>
-</div>
-
-<!-- Pop-up de boas-vindas -->
-<div id="loginPopup" style="display:none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); padding: 20px; background-color: white; border: 1px solid black; z-index: 1000;">
-    <p id="welcomeMessage"></p>
-    <button onclick="closePopup()">Fechar</button>
-</div>
-
-<!-- Botão de Logout -->
-<button class="logout-button" id="logoutButton" style="display: none;">Sair</button>
-
-
-
-
-
-
-
-    </header>
-
-    <!-- Menu de navegação -->
-    <nav>
-        <ul>
-            <li><a href="index.html">Início</a></li>
-            <li><a href="produtos.html">Produtos</a></li>
-            <li><a href="promocoes.html">Promoções</a></li>
-            <li><a href="contato.html">Contato</a></li>
-        </ul>
-    </nav>
-
-    <!-- Conteúdo principal -->
-    <div class="container">
-        <!-- Seção de Banners -->
-        <div class="announcement-cards">
-            <div class="announcement-card">
-                <video width="1200" height="200" autoplay loop muted>
-                    <source src="1010.mp4" type="video/mp4">
-                    Seu navegador não suporta o elemento de vídeo.
-                </video>
-            </div>
-        </div>
-    
-        <script src="script.js"></script>
-        <br>
-
-        <!-- Seção de Produtos Baratos -->
-        <section class="cheap-products">
-            <h2>Produtos Baratos e Imperdíveis</h2>
-            <br>
-            <div class="products">
-                <!-- Produto Barato 1 -->
-                <div class="product-card" data-product-id="1">
-                    <img src="1.jpg" alt="Produto Barato 1">
-                    <h2>Produto Barato 1</h2>
-                    <p>Descrição do produto barato 1.</p>
-                    <p><strong>R$ 49,90</strong></p>
-                    <button class="add-to-cart">Adicionar ao Carrinho</button>
-                </div>
-
-                <!-- Produto Barato 2 -->
-                <div class="product-card" data-product-id="2">
-                    <img src="https://via.placeholder.com/300x300" alt="Produto Barato 2">
-                    <h2>Produto Barato 2</h2>
-                    <p>Descrição do produto barato 2.</p>
-                    <p><strong>R$ 59,90</strong></p>
-                    <button class="add-to-cart">Adicionar ao Carrinho</button>
-                </div>
-
-                <!-- Produto Barato 3 -->
-                <div class="product-card" data-product-id="3">
-                    <img src="https://via.placeholder.com/300x300" alt="Produto Barato 3">
-                    <h2>Produto Barato 3</h2>
-                    <p>Descrição do produto barato 3.</p>
-                    <p><strong>R$ 69,90</strong></p>
-                    <button class="add-to-cart">Adicionar ao Carrinho</button>
-                </div>
-            </div>
-        </section>
-
-        <script src="carrinho.js"></script>
-
-        <!-- Seção de Anúncios -->
-        <section class="announcements">
-            <h2>Anúncios</h2>
-            <div class="announcement-cards">
-                <!-- Anúncio 1 -->
-                <div class="announcement-card">
-                    <video width="1200" height="200" autoplay loop muted>
-                        <source src="video1.mp4" type="video/mp4">
-                        Seu navegador não suporta o elemento de vídeo.
-                    </video>
-                    <p>Descrição do anúncio 1.</p>
-                </div>
-        </section>
-
-        <div id="loginPopup" class="popup" style="display: none;">
-            <div class="popup-content">
-                <h2 id="welcomeMessage"></h2>
-                <button class="close-popup" onclick="closePopup()">Fechar</button>
-            </div>
-        </div>
-
-        <!-- Modal do Carrinho -->
-        <div class="cart-modal" id="cartModal">
-            <div class="cart-content">
-                <h2>Carrinho</h2>
-                <div id="cartItems"></div>
-                <button id="checkoutButton" style="display: none; margin-top: 20px;">Finalizar Compra</button>
-                <button id="closeCartButton">Fechar</button>
-            </div>
-        </div> 
-
-        <!-- Rodapé -->
-        <footer>
-            <p>Loja Brasileira - Todos os direitos reservados &copy; 2024</p>
-        </footer>
-
-        <!-- Incluindo o script login.js -->
-        <script src="login.js"></script>
-
-        <!-- Funções para persistir o carrinho no LocalStorage -->
-        <script>
-            let cart = [];
-
-            // Função para carregar o carrinho do LocalStorage
-            function loadCart() {
-                const storedCart = localStorage.getItem('cart');
-                if (storedCart) {
-                    cart = JSON.parse(storedCart);
-                }
-            }
-
-            // Função para salvar o carrinho no LocalStorage
-            function saveCart() {
-                localStorage.setItem('cart', JSON.stringify(cart));
-            }
-
-            // Carrega o carrinho ao iniciar a página
-            loadCart();
-
-            // Evento para adicionar produtos ao carrinho
-            document.querySelectorAll('.add-to-cart').forEach(button => {
-                button.addEventListener('click', function() {
-                    const productCard = this.closest('.product-card');
-                    const productId = productCard.getAttribute('data-product-id');
-                    const productName = productCard.querySelector('h2').textContent;
-                    const productPrice = productCard.querySelector('strong').textContent;
-
-                    // Adiciona o produto ao carrinho
-                    cart.push({ id: productId, name: productName, price: productPrice });
-                    saveCart(); // Salva o carrinho no LocalStorage
-                    alert(`${productName} adicionado ao carrinho!`);
-                });
-            });
-
-            // Evento para visualizar o carrinho
-            document.getElementById('viewCartButton').addEventListener('click', function() {
-                displayCart();
-                document.getElementById('cartModal').style.display = 'flex';
-            });
-
-            // Evento para fechar o modal do carrinho
-            document.getElementById('closeCartButton').addEventListener('click', function() {
-                document.getElementById('cartModal').style.display = 'none';
-            });
-
-            // Função para exibir os itens do carrinho
-            function displayCart() {
-                const cartItems = document.getElementById('cartItems');
-                cartItems.innerHTML = ''; // Limpa o conteúdo atual do carrinho
-
-                if (cart.length === 0) {
-                    cartItems.innerHTML = '<p>O carrinho está vazio.</p>';
-                    return;
-                }
-
-                cart.forEach(item => {
-                    const cartItem = document.createElement('div');
-                    cartItem.classList.add('cart-item');
-                    cartItem.innerHTML = `
-                        <span>${item.name} - ${item.price}</span>
-                        <button onclick="removeFromCart('${item.id}')">Remover</button>
-                    `;
-                    cartItems.appendChild(cartItem);
-                });
-            }
-
-            // Função para remover itens do carrinho
-            function removeFromCart(productId) {
-                cart = cart.filter(item => item.id !== productId);
-                saveCart(); // Atualiza o LocalStorage após remover o item
-                displayCart();
-            }
-        </script>
+          <button type="submit">Entrar</button>
+        </form>
+        <div style="text-align: right;">
+          <button type="button" onclick="window.location.href='cadastro.html'">Cadastrar</button>
+      </div>
+      </div>
     </div>
+  </nav>
+  </header>
+
+  <main>
+    <section class="content">
+      <!-- Carrosel Banner -->
+      <div class="slide">
+        <input type="radio" name="slide" id="slide1" checked>
+        <input type="radio" name="slide" id="slide2">
+        <input type="radio" name="slide" id="slide3">
+        <input type="radio" name="slide" id="slide4">
+        <input type="radio" name="slide" id="slide5">
+
+        <div class="foto s1">
+          <img src="sp1.jpg">
+        </div>
+        <div class="foto">
+          <img src="sp2.jpg">
+        </div>
+        <div class="foto">
+          <img src="sp3.jpg">
+        </div>
+        <div class="foto">
+          <img src="sp4.jpg">
+        </div>
+        <div class="foto">
+          <img src="sp5.jpg">
+        </div>
+      </div>
+
+      <div class="navegação">
+        <label class="barra" for="slide1"></label>
+        <label class="barra" for="slide2"></label>
+        <label class="barra" for="slide3"></label>
+        <label class="barra" for="slide4"></label>
+        <label class="barra" for="slide5"></label>
+      </div>
+    </section>
+
+    <section class="topo">
+      <div id="texto-base">
+        <h2 class="titulo" id="Sobre"><a href="#">Sobre a Lojinha</a></h2>
+        <p>
+          Localizada no coração da cidade a Lojinha de Tênis traz para o mercado o que há de melhor no mundo dos calçados.
+          Fundada em 2024, a Lojinha de Tênis já é destaque na cidade e conquista novos clientes a cada dia.
+        </p>
+
+        <p>
+          <em>Nossa missão é: <strong>"Proporcionar auto-estima e qualidade de vida aos clientes"</strong> </em>
+        </p>
+
+        <p>
+          Oferecemos profissionais experientes e antenados às mudanças no mundo da moda.
+          O atendimento possui padrão de excelência e agilidade, garantindo qualidade e satisfação dos nossos clientes.
+        </p>
+      </div>
+    </section>
+
+    <section> <!-- Cards dos Tênis -->
+      <div class="card">
+        <div class="inicio">
+          <h2 class="titulo" id="Produtos"><a href="#">Produtos</a></h2>
+        </div>
+
+        <div class="forma">
+          <div class="base-card card0">
+            <div class="borda">
+              <h2>Tênis Adzero</h2>
+              <div class="texto-card">
+                <span class="info">Running</span>
+                <span class="info">3 cores</span>
+                <span class="preco">R$ 299,99</span>
+                <button class="add-cart">Adicionar ao Carrinho</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="base-card card1">
+            <div class="borda">
+              <h2>Tênis Ultraboost 22</h2>
+              <div class="texto-card">
+                <span class="info">Running</span>
+                <span class="info">4 Cores</span>
+                <span class="preco">R$ 399,99</span>
+                <button class="add-cart">Adicionar ao Carrinho</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="base-card card2">
+            <div class="borda">
+              <h2>Tênis X9000L2</h2>
+              <div class="texto-card">
+                <span class="info">Running</span>
+                <span class="info">3 Cores</span>
+                <span class="preco">R$ 349,99</span>
+                <button class="add-cart">Adicionar ao Carrinho</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="forma">
+          <div class="base-card card3">
+            <div class="borda">
+              <h2>Chuteira Speedflow</h2>
+              <div class="texto-card">
+                <span class="info">Futebol</span>
+                <span class="info">2 Cores</span>
+                <span class="preco">R$ 249,99</span>
+                <button class="add-cart">Adicionar ao Carrinho</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="base-card card4">
+            <div class="borda">
+              <h2>Tênis OwnTheGame</h2>
+              <div class="texto-card">
+                <span class="info">Basquete</span>
+                <span class="info">2 Cores</span>
+                <span class="preco">R$ 349,99</span>
+                <button class="add-cart">Adicionar ao Carrinho</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="base-card card5">
+            <div class="borda">
+              <h2>Tênis Internacional</h2>
+              <div class="texto-card">
+                <span class="info">Running</span>
+                <span class="info">1 Cor</span>
+                <span class="preco">R$ 199,99</span>
+                <button class="add-cart">Adicionar ao Carrinho</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section> <!-- Cards dos Tênis -->
+
+
+    
+<script>
+const btnMobile = document.getElementById("btn")
+
+function menuMobile(){
+  const nav = document.getElementById("nav")
+  nav.classList.toggle("active")
+}
+
+btnMobile.addEventListener("click", menuMobile)
+</script>
+
+  </main>
+
+  <footer>
+    <div class="footer">
+      <p>&copy; FATEC - Ourinhos</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>

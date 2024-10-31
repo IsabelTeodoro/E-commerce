@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrinho</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-qrcode/0.18.0/jquery.qrcode.min.js"></script>
+</head>
+<body>
+  <header>
+    <nav id="nav">
+      <a class="logo" href="/">Tenis Lojinha</a>
+      <ul class="nav-lista">
+        <li><a href="#Sobre">Sobre</a></li>
+        <li><a href="#Produtos">Produtos</a></li>
+        <li><a href="Contato.html">Contatos</a></li>
+        <li><a href="carrinho.html"><img src="carrinho-icon.png" alt="Carrinho (0)" style="width: 24px; height: 24px;"></a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Itens no Carrinho</h2>
+    <div class="carrinho">
+      <form id="cart-form">
+        <div id="cart-items" class="cart-item-container"></div>
+        <div id="total-price" class="total-price"></div>
+        <h3>Informações de Entrega</h3>
+        <label for="name">Nome Completo:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="address">Endereço:</label>
+        <input type="text" id="address" name="address" required>
+        <label for="city">Cidade:</label>
+        <input type="text" id="city" name="city" required>
+        <label for="postalCode">CEP:</label>
+        <input type="text" id="postalCode" name="postalCode" required>
+        <h3>Método de Pagamento</h3>
+        <label for="paymentMethod">Selecione o método de pagamento:</label>
+        <select id="paymentMethod" name="paymentMethod" required>
+            <option value="">Selecione...</option>
+            <option value="credit">Cartão de Crédito</option>
+            <option value="debit">Cartão de Débito</option>
+            <option value="pix">Pix</option>
+            <option value="boleto">Boleto Bancário</option>
+        </select>
+        <div id="installmentOptions" style="display:none;">
+          <label for="installments">Selecione o número de parcelas (máximo 5):</label>
+          <select id="installments" name="installments">
+              <option value="1">1x sem juros</option>
+              <option value="2">2x sem juros</option>
+              <option value="3">3x sem juros</option>
+              <option value="4">4x sem juros</option>
+              <option value="5">5x sem juros</option>
+          </select>
+        </div>
+        <div id="creditCardFields" style="display:none;">
+          <h4>Preencha os dados do Cartão de Crédito:</h4>
+          <label for="cardNumber">Número do Cartão:</label>
+          <input type="text" id="cardNumber" name="cardNumber">
+          <label for="cardHolder">Nome no Cartão:</label>
+          <input type="text" id="cardHolder" name="cardHolder">
+          <label for="expiryDate">Data de Validade (MM/AA):</label>
+          <input type="text" id="expiryDate" name="expiryDate">
+          <label for="cvv">CVV:</label>
+          <input type="text" id="cvv" name="cvv">
+        </div>
+        <div id="debitCardFields" style="display:none;">
+          <h4>Preencha os dados do Cartão de Débito:</h4>
+          <label for="debitCardNumber">Número do Cartão:</label>
+          <input type="text" id="debitCardNumber" name="debitCardNumber">
+          <label for="debitCardHolder">Nome no Cartão:</label>
+          <input type="text" id="debitCardHolder" name="debitCardHolder">
+          <label for="debitExpiryDate">Data de Validade (MM/AA):</label>
+          <input type="text" id="debitExpiryDate" name="debitExpiryDate">
+          <label for="debitCvv">CVV:</label>
+          <input type="text" id="debitCvv" name="debitCvv">
+        </div>
+        <input type="submit" value="Confirmar Pedido" class="submit-btn">
+        <div id="qrCodeContainer" class="qr-code" style="display:none;">
+          <h4>Escaneie o QR Code para pagamento via Pix:</h4>
+          <div id="qrCode"></div>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer">
+      <p>&copy; FATEC - Ourinhos</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+  <script>
+    // Exibe o resumo dos itens no carrinho
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartSummary = document.getElementById('cart-items');
+    if (cartItems.length === 0) {
+        cartSummary.innerHTML = '<p>O carrinho está vazio.</p>';
+    } else {
+        cartItems.forEach(item => {
+            const itemElement = document.createElement('div');
+            itemElement.classList.add('cart-item');
+            itemElement.innerHTML = `<span>${item.name} - R$ ${item.price.toFixed(2)}</span>`;
+            cartSummary.appendChild(itemElement);
+        });
+    }
+
+    // Exibe campos conforme método de pagamento selecionado
+    const paymentMethod = document.getElementById('paymentMethod');
+    const creditCardFields = document.getElementById('creditCardFields');
+    const debitCardFields = document.getElementById('debitCardFields');
+    const installmentOptions = document.getElementById('installmentOptions');
+
+    paymentMethod.addEventListener('change', function() {
+        const value = paymentMethod.value;
+        creditCardFields.style.display = (value === 'credit') ? 'block' : 'none';
+        debitCardFields.style.display = (value === 'debit') ? 'block' : 'none';
+        installmentOptions.style.display = (value === 'credit') ? 'block' : 'none';
+        document.getElementById('qrCodeContainer').style.display = 'none'; // Esconde QR code ao mudar método
+        document.getElementById('qrCode').innerHTML = ''; // Limpa QR code
+    });
+
+    // Handle form submission
+    document.getElementById('cart-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        if (paymentMethod.value === 'pix') {
+            const totalPrice = cartItems.reduce((total, item) => total + item.price, 0).toFixed(2); // Calcular o valor total
+            const qrCodeData = `Pagamento via Pix - R$ ${totalPrice}`; // Dados a serem exibidos no QR Code
+
+            $('#qrCode').empty(); // Limpa qualquer QR Code existente
+            $('#qrCode').qrcode({
+                text: qrCodeData, // Dados que serão codificados no QR Code
+                width: 128, // Largura do QR Code
+                height: 128 // Altura do QR Code
+            });
+
+            document.getElementById('qrCodeContainer').style.display = 'block'; // Exibe o QR Code
+        } else {
+            alert('Método de pagamento: ' + paymentMethod.value); // Manter o comportamento padrão dos outros métodos
+        }
+    });
+  </script>
+</body>
+</html>

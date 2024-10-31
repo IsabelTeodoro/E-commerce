@@ -1,83 +1,86 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
+  
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Contato - Loja Brasileira</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loja de Tênis</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+  
 <body>
-
-    <!-- Cabeçalho -->
-    <header>
-        <h1>Loja Brasileira</h1>
-        <p>Entre em contato conosco!</p>
-    </header>
-
-    <!-- Menu de navegação -->
-    <nav>
-        <ul>
-            <li><a href="index.html">Início</a></li>
-            <li><a href="produtos.html">Produtos</a></li>
-            <li><a href="promocoes.html">Promoções</a></li>
-            <li><a href="contato.html">Contato</a></li>
-        </ul>
+  
+  <header> <!--Cabeçario-->
+    <nav id="nav">
+      <a class = "logo" href = "/">Tenis Lojinha</a>
+      
+      <button id="btn"><span id="hbgr"></span></button>
+      
+      <ul class="nav-lista">
+        <li><a href = "#Sobre">Sobre</a></li>
+        <li><a href = "#Produtos">Produtos</a></li>
+        <li><a href = "#Contato">Contatos</a></li>
+      </ul>
     </nav>
+  </header> <!--Cabeçario-->
+<section class="formulario"> <!--Aba de Contato-->
 
-    <!-- Conteúdo principal -->
-    <div class="container">
-        <h2>Entre em Contato</h2>
+    <div class="inicio">
         
-        <!-- Informações de Contato -->
-        <section class="contact-info">
-            <h3>Informações de Contato</h3>
-            <p><strong>Endereço:</strong> Rua Exemplo, 123, São Paulo - SP, 01234-567</p>
-            <p><strong>Telefone:</strong> (11) 1234-5678</p>
-            <p><strong>Email:</strong> contato@lojabrasileira.com.br</p>
-        </section>
-
-        <!-- Formulário de Contato -->
-        <section class="contact-form">
-            <h3>Formulário de Contato</h3>
-            <form id="contactForm">
-                <label for="name">Nome:</label>
-                <input type="text" id="name" name="name" required>
-
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-
-                <label for="message">Mensagem:</label>
-                <textarea id="message" name="message" rows="5" required></textarea>
-
-                <input type="submit" value="Enviar">
-                <p id="contactMessage" class="contact-message"></p>
-            </form>
-        </section>
+        <h2 class="titulo" id="Contato"><a href="#">Contatos</a></h2>
+          
     </div>
+    
+    <form>
+      <fieldset>
+         <label class="label1" for="nomesebrenome">Nome e Sobrenome</label>
+         <input type="text" id="nomesebrenome" class="input-padrão" required>
 
-    <!-- Rodapé -->
-    <footer>
-        <p>Loja Brasileira - Todos os direitos reservados &copy; 2024</p>
-    </footer>
+         <label class="label1" for="Email">Email</label>
+         <input type="email" id="Email" class="input-padrão" required placeholder="seuemail@dominio.com">
 
-    <script>
-        // Elementos da página
-        const contactForm = document.getElementById("contactForm");
-        const contactMessage = document.getElementById("contactMessage");
+         <label class="label1" for="Telefone">Telefone</label>
+         <input type="tel" id="Telefone" class="input-padrão" required placeholder="(XX) XXXXX-XXXX">
 
-        // Evento de envio do formulário
-        contactForm.addEventListener("submit", function(event) {
-            event.preventDefault(); // Evita o envio do formulário
+         <label class="label1" for="mensagem">Deixe sua Mensagem</label>
+         <textarea rows="10" id="mensagem" class="input-padrão"></textarea>
+      </fieldset>
 
-            // Simulação de envio de mensagem
-            contactMessage.style.color = "green";
-            contactMessage.textContent = "Sua mensagem foi enviada com sucesso!";
-            
-            // Limpar os campos do formulário
-            contactForm.reset();
-        });
-    </script>
+      <fieldset class="pergunta">
+         <legend class="legenda">Como você prefere nosso contato ?</legend>
 
+         <label for="email"><input type="radio" id="email" name="contatos" class="input-demais" >Email</label>
+                  
+         <label for="telefone"><input type="radio" id="telefone" name="contatos" class="input-demais" >Telefone</label>
+
+         <label for="whatssap"><input type="radio" id="whatssap" name="contatos" class="input-demais" checked>Whatssap</label>
+      </fieldset>
+
+      <fieldset class="caixa1">
+        <legend class="legenda">Qual o melhor momento para ser atendido?</legend>
+
+        <select class="input-demais" id="momento">
+          <option>Manhã</option>
+          <option>Tarde</option>
+          <option>Noite</option>
+        </select>
+
+        <label for="checkbox"><input type="checkbox" id="checkbox" class="checkbox"> Gostaria de receber nossas atualizações por email?</label>
+
+         <input type="submit" value="Enviar Formulário" class="enviar">
+        
+      </fieldset>
+
+    </form>
+    
+  </section> <!--Aba de Contato-->
+  <footer>
+    <div class="footer">
+      <p>&copyFATEC - Ourinhos</p>
+    </div>
+  </footer>
+  
+  <script src="script.js"></script>
 </body>
 </html>
