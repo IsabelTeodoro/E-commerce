@@ -82,28 +82,72 @@ nav {
   display: none;
 }
 
+.login-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+}
+
 /* Estilos de Login/Cadastro */
+/* Estilos de Login/Cadastro */
+.login-container {
+  display: flex;
+  justify-content: center;
+ 
+  margin-top: 150px; /* Adiciona espaçamento para empurrar o formulário mais para baixo */
+}
+
 .login {
   display: flex;
-  align-items: center;
-  padding-left: 20px; /* Espaçamento à esquerda para separar do nav */
-  background-color:  #1F1D36;
-  padding: 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #1F1D36;
+  padding: 20px;
   border-radius: 5px;
-}
-
-.login a {
-  font-size: 20px;
-  margin-right: 20px;
-  color: white; /* Mude esta cor para a que você preferir */
-  text-decoration: none;
-  transition: 0.3s;
-}
-
-.login a:hover {
   color: white;
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
 }
 
+.login form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login label {
+  size: 40px;
+  padding: 2px 4px;
+  margin-bottom: 5px;
+  font-size: 30px;
+  font-family:system-ui, -apple-system, Helvetica, Arial, sans-serif ;
+}
+
+.login input {
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 300px;
+  border-radius: 3px;
+  border: none;
+}
+
+.login button {
+  margin-top: 10px;
+  padding: 8px;
+  background-color: #6C63FF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login button:hover {
+  background-color: #4E47B2;
+}
 
 .cadastro-section {
   display: flex; /* Usando Flexbox para controlar a posição do formulário */
@@ -209,6 +253,7 @@ nav {
 .foto img {
   width: 100%;
   height: 100%;
+  z-index: 1;
 }
 
 #slide1:checked ~ .s1 {
@@ -795,6 +840,9 @@ button[type="submit"]:hover {
   margin-top: 10px;
   text-align: center; /* Centraliza a mensagem de sucesso */
 }
+
+
+
 /* PARTE DO BANNER */
 
 /* Ajustes para o Banner */
@@ -837,11 +885,6 @@ button[type="submit"]:hover {
 #nextButton {
   right: 10px;
 }
-
-
-
-
-
 
   .footer{
     font-size: 3vh;
