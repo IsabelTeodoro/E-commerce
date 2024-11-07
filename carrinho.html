@@ -9,39 +9,38 @@
   <style>
     /* Estilo do contêiner dos itens do carrinho */
     .cart-item-container {
-        width: 50%; /* Define a largura como 50% da tela */
-        margin: 0 auto; /* Centraliza o contêiner na tela */
+        width: 100%;
+        margin: 0 auto;
         border: 1px solid black;
         padding: 15px;
         margin-bottom: 10px;
         border-radius: 5px;
         background-color: #f9f9f9;
     }
-
-    /* Estilo dos itens individuais no carrinho */
     .cart-item-container .cart-item {
         display: flex;
         justify-content: space-between;
         padding: 10px 0;
         border-bottom: 1px solid #ddd;
     }
-
-    /* Estilo do título da seção */
     .cart-item-container h2 {
         font-size: 1.5em;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
         text-align: center;
     }
-
-    /* Estilo para o preço total */
     .total-price {
         font-weight: bold;
         font-size: 1.2em;
         margin-top: 15px;
         text-align: right;
     }
-
-    /* Estilo dos campos de entrada e botões */
+    #cart-form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    main h2 {
+      text-align: center;
+    }
     #cart-form input[type="text"],
     #cart-form select,
     #cart-form input[type="submit"] {
@@ -51,8 +50,6 @@
         border: 1px solid #ddd;
         border-radius: 4px;
     }
-
-    /* Botão de confirmação de pedido */
     .submit-btn {
         background-color: #28a745;
         color: white;
@@ -60,17 +57,14 @@
         cursor: pointer;
         border: none;
     }
-
     .submit-btn:hover {
         background-color: #218838;
     }
-
-    /* Estilo para o QR Code */
     .qr-code {
         text-align: center;
         margin-top: 15px;
     }
-</style>
+  </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-qrcode/0.18.0/jquery.qrcode.min.js"></script>
 </head>
@@ -147,11 +141,11 @@
           <input type="text" id="debitCvv" name="debitCvv">
         </div>
         <input type="submit" value="Confirmar Pedido" class="submit-btn">
+
         <div id="qrCodeContainer" class="qr-code" style="display:none;">
           <h4>Escaneie o QR Code para pagamento via Pix:</h4>
           <div id="qrCode"></div>
         </div>
-        
       </form>
     </div>
   </main>
@@ -165,7 +159,6 @@
   <script src="script.js"></script>
 
   <script>
-    // Exibe o resumo dos itens no carrinho
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     const cartSummary = document.getElementById('cart-items');
     if (cartItems.length === 0) {
@@ -179,41 +172,45 @@
         });
     }
 
-    // Exibe campos conforme método de pagamento selecionado
-    const paymentMethod = document.getElementById('paymentMethod');
-    const creditCardFields = document.getElementById('creditCardFields');
-    const debitCardFields = document.getElementById('debitCardFields');
-    const installmentOptions = document.getElementById('installmentOptions');
+    document.addEventListener('DOMContentLoaded', function () {
+      const paymentMethod = document.getElementById('paymentMethod');
+      const creditCardFields = document.getElementById('creditCardFields');
+      const debitCardFields = document.getElementById('debitCardFields');
+      const installmentOptions = document.getElementById('installmentOptions');
+      const qrCodeContainer = document.getElementById('qrCodeContainer');
+      const qrCode = document.getElementById('qrCode');
+  
+      // Função para exibir os campos de pagamento corretos
+      function updatePaymentFields() {
+          // Oculta todos os campos por padrão
+          creditCardFields.style.display = 'none';
+          debitCardFields.style.display = 'none';
+          installmentOptions.style.display = 'none';
+          qrCodeContainer.style.display = 'none';
+  
+          // Exibe os campos corretos com base no método de pagamento selecionado
+          if (paymentMethod.value === 'credit') {
+              creditCardFields.style.display = 'block';
+              installmentOptions.style.display = 'block';
+          } else if (paymentMethod.value === 'debit') {
+              debitCardFields.style.display = 'block';
+          } else if (paymentMethod.value === 'pix') {
+              qrCodeContainer.style.display = 'block';
+          }
+      }
+  
+      // Adiciona o evento de mudança ao elemento de método de pagamento
+      paymentMethod.addEventListener('change', updatePaymentFields);
+  
+      // Executa a função para definir o estado inicial ao carregar a página
+      updatePaymentFields();
+  });
+  
+  
 
-    paymentMethod.addEventListener('change', function() {
-        const value = paymentMethod.value;
-        creditCardFields.style.display = (value === 'credit') ? 'block' : 'none';
-        debitCardFields.style.display = (value === 'debit') ? 'block' : 'none';
-        installmentOptions.style.display = (value === 'credit') ? 'block' : 'none';
-        document.getElementById('qrCodeContainer').style.display = 'none'; // Esconde QR code ao mudar método
-        document.getElementById('qrCode').innerHTML = ''; // Limpa QR code
-    });
+   
+</script>
 
-    // Handle form submission
-    document.getElementById('cart-form').addEventListener('submit', function(event) {
-        event.preventDefault();
 
-        if (paymentMethod.value === 'pix') {
-            const totalPrice = cartItems.reduce((total, item) => total + item.price, 0).toFixed(2); // Calcular o valor total
-            const qrCodeData = `Pagamento via Pix - R$ ${totalPrice}`; // Dados a serem exibidos no QR Code
-
-            $('#qrCode').empty(); // Limpa qualquer QR Code existente
-            $('#qrCode').qrcode({
-                text: qrCodeData, // Dados que serão codificados no QR Code
-                width: 128, // Largura do QR Code
-                height: 128 // Altura do QR Code
-            });
-
-            document.getElementById('qrCodeContainer').style.display = 'block'; // Exibe o QR Code
-        } else {
-            alert('Método de pagamento: ' + paymentMethod.value); // Manter o comportamento padrão dos outros métodos
-        }
-    });
-  </script>
 </body>
 </html>
