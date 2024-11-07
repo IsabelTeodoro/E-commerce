@@ -6,6 +6,71 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Carrinho</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Estilo do contêiner dos itens do carrinho */
+    .cart-item-container {
+        width: 50%; /* Define a largura como 50% da tela */
+        margin: 0 auto; /* Centraliza o contêiner na tela */
+        border: 1px solid black;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    /* Estilo dos itens individuais no carrinho */
+    .cart-item-container .cart-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Estilo do título da seção */
+    .cart-item-container h2 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    /* Estilo para o preço total */
+    .total-price {
+        font-weight: bold;
+        font-size: 1.2em;
+        margin-top: 15px;
+        text-align: right;
+    }
+
+    /* Estilo dos campos de entrada e botões */
+    #cart-form input[type="text"],
+    #cart-form select,
+    #cart-form input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    /* Botão de confirmação de pedido */
+    .submit-btn {
+        background-color: #28a745;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+    }
+
+    .submit-btn:hover {
+        background-color: #218838;
+    }
+
+    /* Estilo para o QR Code */
+    .qr-code {
+        text-align: center;
+        margin-top: 15px;
+    }
+</style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-qrcode/0.18.0/jquery.qrcode.min.js"></script>
 </head>
@@ -24,10 +89,12 @@
 
   <main>
     <h2>Itens no Carrinho</h2>
+   
     <div class="carrinho">
       <form id="cart-form">
         <div id="cart-items" class="cart-item-container"></div>
         <div id="total-price" class="total-price"></div>
+       
         <h3>Informações de Entrega</h3>
         <label for="name">Nome Completo:</label>
         <input type="text" id="name" name="name" required>
@@ -37,6 +104,7 @@
         <input type="text" id="city" name="city" required>
         <label for="postalCode">CEP:</label>
         <input type="text" id="postalCode" name="postalCode" required>
+       
         <h3>Método de Pagamento</h3>
         <label for="paymentMethod">Selecione o método de pagamento:</label>
         <select id="paymentMethod" name="paymentMethod" required>
@@ -83,6 +151,7 @@
           <h4>Escaneie o QR Code para pagamento via Pix:</h4>
           <div id="qrCode"></div>
         </div>
+        
       </form>
     </div>
   </main>

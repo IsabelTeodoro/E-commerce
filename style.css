@@ -742,22 +742,8 @@ h2 {
   color: #1F1D36;
 }
 
-.cart-item-container {
-  margin-bottom: 20px;
-}
 
-.cart-item-container div {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: #fff;
-}
 
-.total-price {
-  font-weight: bold;
-  font-size: 18px;
-  margin-top: 10px;
-}
 
 .payment-methods {
   background-color: #fff;
