@@ -298,19 +298,33 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
-<script>
-   
-  cartForm.addEventListener('submit', async function(event) {
-    event.preventDefault();
-
-    const selectedPaymentMethod = paymentMethod.value.trim();
-
-    if (selectedPaymentMethod === 'boleto') {
-        // Gerar o PDF do boleto de forma assíncrona
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const cartForm = document.getElementById('cart-form');
+      const paymentMethod = document.getElementById('paymentMethod');
+    
+      cartForm.addEventListener('submit', async function (event) {
+        event.preventDefault();  // Evita o envio normal do formulário
+  
+        // Verifica o método de pagamento
+        const selectedPaymentMethod = paymentMethod.value;
+  
+        // Se o método de pagamento for "boleto", gera o PDF do boleto
+        if (selectedPaymentMethod === 'Boleto Bancário') {
+          await generateBoleto();  // Chama a função assíncrona para gerar o boleto
+        } else {
+          alert("Pedido confirmado! Obrigado por comprar na Tenis Lojinha.");
+        }
+  
+        // Após a geração do boleto, pode-se resetar o formulário ou realizar outras ações.
+        cartForm.reset();  // Exemplo de reset do formulário
+      });
+  
+      async function generateBoleto() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-
-        // Geração do boleto - exemplo simples
+  
+        // Geração simples do boleto
         doc.setFontSize(16);
         doc.text('Boleto Bancário - Tenis Lojinha', 10, 10);
         doc.setFontSize(12);
@@ -319,18 +333,17 @@
         doc.text('Vencimento: 30/11/2024', 10, 40);
         doc.text('Dados bancários: Banco X, Agência 1234, Conta 56789', 10, 50);
         doc.text('Código de barras: 34191.79001 23456.789012 34567.890123 4 123400123456', 10, 60);
-
-        // Espera o PDF ser gerado antes de permitir o download
-        await new Promise(resolve => setTimeout(resolve, 100)); // Simula o delay, se necessário
-
-        // Gerar o arquivo PDF
+  
+        // Espera para simular a criação do boleto
+        await new Promise(resolve => setTimeout(resolve, 500)); // Simula algum tempo de geração do PDF
+  
+        // Salva o PDF gerado
         doc.save('boleto_simples.pdf');
-        alert("Boleto gerado com sucesso!");
-    } else {
-        alert("Por favor, selecione a opção de Boleto Bancário.");
-    }
-});
-
+        alert("Boleto gerado com sucesso! Verifique o arquivo gerado.");
+      }
+    });
+  </script>
+  
 
 
 
