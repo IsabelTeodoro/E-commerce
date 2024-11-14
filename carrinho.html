@@ -168,6 +168,10 @@
         </div>
         <input type="submit" value="Confirmar Pedido" class="submit-btn">
 
+
+
+
+
         <div id="qrCodeContainer" class="qr-code" style="display:none;">
           <h4>Escaneie o QR Code para pagamento via Pix:</h4>
           <div id="qrCode"></div>
@@ -292,85 +296,45 @@
   </script>
   
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
+<script>
+   
+  cartForm.addEventListener('submit', async function(event) {
+    event.preventDefault();
 
+    const selectedPaymentMethod = paymentMethod.value.trim();
 
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Certificando que o DOM está completamente carregado
-      const cartForm = document.getElementById('cart-form');
-      const paymentMethod = document.getElementById('paymentMethod');
-      const totalPrice = 150.00; // Valor fixo da compra
-  
-      // Valida o envio do formulário
-      cartForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Evita o envio do formulário padrão
-  
-        // Verifica se o método de pagamento é 'boleto'
-        if (paymentMethod.value === 'boleto') {
-          // Captura os dados de entrega do formulário
-          const name = document.getElementById('name').value;
-          const address = document.getElementById('address').value;
-          const city = document.getElementById('city').value;
-          const postalCode = document.getElementById('postalCode').value;
-  
-          // Valida se todos os campos foram preenchidos
-          if (name && address && city && postalCode) {
-            generateBoletoPDF(name, address, city, postalCode, totalPrice); // Chama a função para gerar o boleto
-          } else {
-            alert("Por favor, preencha todos os campos obrigatórios.");
-          }
-        } else {
-          alert("Método de pagamento não selecionado corretamente.");
-        }
-      });
-  
-      // Função para gerar o PDF do boleto bancário
-      function generateBoletoPDF(name, address, city, postalCode, totalPrice) {
+    if (selectedPaymentMethod === 'boleto') {
+        // Gerar o PDF do boleto de forma assíncrona
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-  
-        // Título do boleto
-        doc.setFont("helvetica", "bold");
+
+        // Geração do boleto - exemplo simples
         doc.setFontSize(16);
-        doc.text('Boleto Bancário - Tenis Lojinha', 20, 20);
-  
-        // Informações do cliente
-        doc.setFont("helvetica", "normal");
+        doc.text('Boleto Bancário - Tenis Lojinha', 10, 10);
         doc.setFontSize(12);
-        doc.text(`Nome: ${name}`, 20, 40);
-        doc.text(`Endereço: ${address}`, 20, 50);
-        doc.text(`Cidade: ${city}`, 20, 60);
-        doc.text(`CEP: ${postalCode}`, 20, 70);
-  
-        // Detalhes do pagamento
-        doc.text(`Valor: R$ ${totalPrice.toFixed(2)}`, 20, 90);
-        doc.text(`Data de Validade: ${new Date().toLocaleDateString()}`, 20, 100);
-  
-        // Simulação de código de barras
-        doc.setFontSize(10);
-        doc.text('Código de Barras: 34191.79001 01063.350059 28500.000003 6 54290000012345', 20, 130);
-  
-        // Representação visual simples do código de barras (retângulo)
-        doc.setLineWidth(0.5);
-        doc.rect(20, 140, 180, 10); // Representando o código de barras
-  
-        // Informações do banco
-        doc.setFontSize(12);
-        doc.text('Banco: Banco 123', 20, 160);
-        doc.text('Agência: 1234', 20, 170);
-        doc.text('Conta Corrente: 123456789', 20, 180);
-  
-        // Gerar e salvar o PDF do boleto
-        doc.save('boleto_tenis_lojinha.pdf');
-      }
-    });
-  </script>
-  
+        doc.text('Este é um boleto gerado para a sua compra.', 10, 20);
+        doc.text('Valor: R$ 100,00', 10, 30);
+        doc.text('Vencimento: 30/11/2024', 10, 40);
+        doc.text('Dados bancários: Banco X, Agência 1234, Conta 56789', 10, 50);
+        doc.text('Código de barras: 34191.79001 23456.789012 34567.890123 4 123400123456', 10, 60);
+
+        // Espera o PDF ser gerado antes de permitir o download
+        await new Promise(resolve => setTimeout(resolve, 100)); // Simula o delay, se necessário
+
+        // Gerar o arquivo PDF
+        doc.save('boleto_simples.pdf');
+        alert("Boleto gerado com sucesso!");
+    } else {
+        alert("Por favor, selecione a opção de Boleto Bancário.");
+    }
+});
 
 
 
+
+  
 
 </body>
 </html>
