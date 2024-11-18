@@ -92,6 +92,8 @@
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 
 </head>
 <body>
@@ -200,12 +202,11 @@
         cartItems.forEach(item => {
             const itemElement = document.createElement('div');
             itemElement.classList.add('cart-item');
-            itemElement.innerHTML = `<span>${item.name} - R$ ${item.price.toFixed(2)}</span>`;
+            itemElement.innerHTML = <span>${item.name} - R$ ${item.price.toFixed(2)}</span>;
             cartSummary.appendChild(itemElement);
         });
     }
   </script>
-  
 
 
 
@@ -251,7 +252,39 @@
                 });
             }
         }
-  
+
+
+    
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Adiciona os detalhes do pedido no PDF
+            doc.text('Pedido Confirmado', 10, 10);
+            doc.text('Nome: ' + document.getElementById('name').value, 10, 20);
+            doc.text('Endereço: ' + document.getElementById('address').value, 10, 30);
+            doc.text('Cidade: ' + document.getElementById('city').value, 10, 40);
+            doc.text('CEP: ' + document.getElementById('postalCode').value, 10, 50);
+
+            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartSummary = document.getElementById('cart-items');
+            const totalPriceElement = document.getElementById('total-price'); // Selecione o elemento para exibir o total
+            let total = 0;
+           
+            
+            const barcodeNumber = "384759102873-627349581074-195837264510"; // Exemplo de número de código de barras
+            doc.text('Código de Barras: ' + barcodeNumber, 10, 60);
+            
+            // Exibe o valor total no PDF
+            doc.text('Valor Total: R$ ' + total.toFixed(2), 10, 70);
+            
+            // Salva o arquivo com o nome "boleto.pdf"
+            doc.save('boleto.pdf');
+        }
+
+
+
+
         paymentMethod.addEventListener('change', updatePaymentFields);
         updatePaymentFields();
   
@@ -283,66 +316,23 @@
             }
   
             const allFieldsFilled = requiredFields.every(field => field && field.value.trim() !== '');
-  
-            if (allFieldsFilled) {
-                alert("Pedido confirmado! Obrigado por comprar na Tenis Lojinha.");
-                cartForm.reset();
-                updatePaymentFields();
-            } else {
-                alert("Por favor, preencha todos os campos obrigatórios.");
-            }
-        });
-    });
-  </script>
-  
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const cartForm = document.getElementById('cart-form');
-      const paymentMethod = document.getElementById('paymentMethod');
-    
-      cartForm.addEventListener('submit', async function (event) {
-        event.preventDefault();  // Evita o envio normal do formulário
-  
-        // Verifica o método de pagamento
-        const selectedPaymentMethod = paymentMethod.value;
-  
-        // Se o método de pagamento for "boleto", gera o PDF do boleto
-        if (selectedPaymentMethod === 'Boleto Bancário') {
-          await generateBoleto();  // Chama a função assíncrona para gerar o boleto
+        if (allFieldsFilled) {
+            alert("Pedido confirmado! Obrigado por comprar na Tenis Lojinha.");
+            generatePDF(); // Gera o PDF após a confirmação
+            cartForm.reset();
+            updatePaymentFields();
         } else {
-          alert("Pedido confirmado! Obrigado por comprar na Tenis Lojinha.");
+            alert("Por favor, preencha todos os campos obrigatórios.");
         }
-  
-        // Após a geração do boleto, pode-se resetar o formulário ou realizar outras ações.
-        cartForm.reset();  // Exemplo de reset do formulário
-      });
-  
-      async function generateBoleto() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-  
-        // Geração simples do boleto
-        doc.setFontSize(16);
-        doc.text('Boleto Bancário - Tenis Lojinha', 10, 10);
-        doc.setFontSize(12);
-        doc.text('Este é um boleto gerado para a sua compra.', 10, 20);
-        doc.text('Valor: R$ 100,00', 10, 30);
-        doc.text('Vencimento: 30/11/2024', 10, 40);
-        doc.text('Dados bancários: Banco X, Agência 1234, Conta 56789', 10, 50);
-        doc.text('Código de barras: 34191.79001 23456.789012 34567.890123 4 123400123456', 10, 60);
-  
-        // Espera para simular a criação do boleto
-        await new Promise(resolve => setTimeout(resolve, 500)); // Simula algum tempo de geração do PDF
-  
-        // Salva o PDF gerado
-        doc.save('boleto_simples.pdf');
-        alert("Boleto gerado com sucesso! Verifique o arquivo gerado.");
-      }
     });
+});
   </script>
+  
+
+ 
+
+  
   
 
 
