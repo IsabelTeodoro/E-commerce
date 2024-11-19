@@ -84,13 +84,17 @@ document.getElementById('payment-method').addEventListener('change', (event) => 
     div.style.display = 'none'; // Esconde todas as opções
   });
 
-  if (selectedMethod === 'credito') {
+  if (selectedMethod === 'Cartão de Crédito') {
     document.getElementById('credit-card-info').style.display = 'block'; // Exibe informações do cartão de crédito
-  } else if (selectedMethod === 'debito') {
+    console.log("passou")
+  } 
+  else if (selectedMethod === 'debito') {
     document.getElementById('debit-card-info').style.display = 'block'; // Exibe informações do cartão de débito
-  } else if (selectedMethod === 'pix') {
+  } 
+  else if (selectedMethod === 'pix') {
     document.getElementById('pix-info').style.display = 'block'; // Exibe informações do Pix
-  } else if (selectedMethod === 'boleto') {
+  } 
+  else if (selectedMethod === 'boleto') {
     document.getElementById('boleto-info').style.display = 'block'; // Exibe informações do boleto
   }
 });
