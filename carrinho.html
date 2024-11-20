@@ -202,7 +202,7 @@
         cartItems.forEach(item => {
             const itemElement = document.createElement('div');
             itemElement.classList.add('cart-item');
-            itemElement.innerHTML = <span>${item.name} - R$ ${item.price.toFixed(2)}</span>;
+            itemElement.innerHTML = `<span>${item.name} - R$ ${item.price.toFixed(2)}</span>`;
             cartSummary.appendChild(itemElement);
         });
     }
@@ -212,7 +212,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const paymentMethod = document.getElementById('paymentMethod');
+      const paymentMethod = document.getElementById('payment-method');
         const creditCardFields = document.getElementById('creditCardFields');
         const debitCardFields = document.getElementById('debitCardFields');
         const installmentOptions = document.getElementById('installmentOptions');
