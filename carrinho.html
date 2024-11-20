@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Carrinho</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+
   <style>
     /* Estilo do contêiner dos itens do carrinho */
     .cart-item-container {
@@ -60,13 +64,37 @@
     .submit-btn:hover {
         background-color: #218838;
     }
-    .qr-code {
-        text-align: center;
-        margin-top: 15px;
-    }
+    #qrCodeContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #ffffff;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+      z-index: 1000; /* Certifique-se de que o QR Code fique acima de outros elementos */
+  }
+  
+  .qr-code h4 {
+      margin-bottom: 10px;
+  }
+  
+  #qrCode {
+      width: 200px;
+      height: 200px;
+  }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-qrcode/0.18.0/jquery.qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
 </head>
 <body>
   <header>
@@ -142,6 +170,10 @@
         </div>
         <input type="submit" value="Confirmar Pedido" class="submit-btn">
 
+
+
+
+
         <div id="qrCodeContainer" class="qr-code" style="display:none;">
           <h4>Escaneie o QR Code para pagamento via Pix:</h4>
           <div id="qrCode"></div>
@@ -158,7 +190,10 @@
 
   <script src="script.js"></script>
 
+
+
   <script>
+    
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     const cartSummary = document.getElementById('cart-items');
     if (cartItems.length === 0) {
@@ -167,50 +202,142 @@
         cartItems.forEach(item => {
             const itemElement = document.createElement('div');
             itemElement.classList.add('cart-item');
-            itemElement.innerHTML = `<span>${item.name} - R$ ${item.price.toFixed(2)}</span>`;
+            itemElement.innerHTML = <span>${item.name} - R$ ${item.price.toFixed(2)}</span>;
             cartSummary.appendChild(itemElement);
         });
     }
+  </script>
 
+
+
+  <script>
     document.addEventListener('DOMContentLoaded', function () {
-      const paymentMethod = document.getElementById('paymentMethod');
-      const creditCardFields = document.getElementById('creditCardFields');
-      const debitCardFields = document.getElementById('debitCardFields');
-      const installmentOptions = document.getElementById('installmentOptions');
-      const qrCodeContainer = document.getElementById('qrCodeContainer');
-      const qrCode = document.getElementById('qrCode');
+        const paymentMethod = document.getElementById('paymentMethod');
+        const creditCardFields = document.getElementById('creditCardFields');
+        const debitCardFields = document.getElementById('debitCardFields');
+        const installmentOptions = document.getElementById('installmentOptions');
+        const qrCodeContainer = document.getElementById('qrCodeContainer');
+        const qrCode = document.getElementById('qrCode');
+        const cartForm = document.getElementById('cart-form');
   
-      // Função para exibir os campos de pagamento corretos
-      function updatePaymentFields() {
-          // Oculta todos os campos por padrão
-          creditCardFields.style.display = 'none';
-          debitCardFields.style.display = 'none';
-          installmentOptions.style.display = 'none';
-          qrCodeContainer.style.display = 'none';
+        function updatePaymentFields() {
+            // Oculta todos os campos inicialmente
+            creditCardFields.style.display = 'none';
+            debitCardFields.style.display = 'none';
+            installmentOptions.style.display = 'none';
+            qrCodeContainer.style.display = 'none';
   
-          // Exibe os campos corretos com base no método de pagamento selecionado
-          if (paymentMethod.value === 'credit') {
-              creditCardFields.style.display = 'block';
-              installmentOptions.style.display = 'block';
-          } else if (paymentMethod.value === 'debit') {
-              debitCardFields.style.display = 'block';
-          } else if (paymentMethod.value === 'pix') {
-              qrCodeContainer.style.display = 'block';
-          }
-      }
+            if (paymentMethod.value === 'credit') {
+                creditCardFields.style.display = 'block';
+                installmentOptions.style.display = 'block';
+            } else if (paymentMethod.value === 'debit') {
+                debitCardFields.style.display = 'block';
+            } else if (paymentMethod.value === 'pix') {
+                qrCodeContainer.style.display = 'block';
   
-      // Adiciona o evento de mudança ao elemento de método de pagamento
-      paymentMethod.addEventListener('change', updatePaymentFields);
+                // Limpa qualquer QR Code gerado anteriormente
+                qrCode.innerHTML = '';
   
-      // Executa a função para definir o estado inicial ao carregar a página
-      updatePaymentFields();
-  });
+                // Dados para o QR Code Pix
+                const qrCodeData = "00020126360014BR.GOV.BCB.PIX0114+5511999999995204000053039865802BR5925Nome Completo Cliente6009SAO PAULO62290515bcb.pod.br/1234567890123453";
+  
+                // Gera o QR Code com a biblioteca QRCode.js
+                new QRCode(qrCode, {
+                    text: qrCodeData,
+                    width: 200,
+                    height: 200,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+            }
+        }
+
+
+    
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Adiciona os detalhes do pedido no PDF
+            doc.text('Pedido Confirmado', 10, 10);
+            doc.text('Nome: ' + document.getElementById('name').value, 10, 20);
+            doc.text('Endereço: ' + document.getElementById('address').value, 10, 30);
+            doc.text('Cidade: ' + document.getElementById('city').value, 10, 40);
+            doc.text('CEP: ' + document.getElementById('postalCode').value, 10, 50);
+
+            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartSummary = document.getElementById('cart-items');
+            const totalPriceElement = document.getElementById('total-price'); // Selecione o elemento para exibir o total
+            let total = 0;
+           
+            
+            const barcodeNumber = "384759102873-627349581074-195837264510"; // Exemplo de número de código de barras
+            doc.text('Código de Barras: ' + barcodeNumber, 10, 60);
+            
+            // Exibe o valor total no PDF
+            doc.text('Valor Total: R$ ' + total.toFixed(2), 10, 70);
+            
+            // Salva o arquivo com o nome "boleto.pdf"
+            doc.save('boleto.pdf');
+        }
+
+
+
+
+        paymentMethod.addEventListener('change', updatePaymentFields);
+        updatePaymentFields();
+  
+        cartForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+  
+            const requiredFields = [
+                document.getElementById('name'),
+                document.getElementById('address'),
+                document.getElementById('city'),
+                document.getElementById('postalCode'),
+                paymentMethod
+            ];
+  
+            if (paymentMethod.value === 'credit') {
+                requiredFields.push(
+                    document.getElementById('cardNumber'),
+                    document.getElementById('cardHolder'),
+                    document.getElementById('expiryDate'),
+                    document.getElementById('cvv')
+                );
+            } else if (paymentMethod.value === 'debit') {
+                requiredFields.push(
+                    document.getElementById('debitCardNumber'),
+                    document.getElementById('debitCardHolder'),
+                    document.getElementById('debitExpiryDate'),
+                    document.getElementById('debitCvv')
+                );
+            }
+  
+            const allFieldsFilled = requiredFields.every(field => field && field.value.trim() !== '');
+
+        if (allFieldsFilled) {
+            alert("Pedido confirmado! Obrigado por comprar na Tenis Lojinha.");
+            generatePDF(); // Gera o PDF após a confirmação
+            cartForm.reset();
+            updatePaymentFields();
+        } else {
+            alert("Por favor, preencha todos os campos obrigatórios.");
+        }
+    });
+});
+  </script>
+  
+
+ 
+
   
   
 
-   
-</script>
 
+
+  
 
 </body>
 </html>
