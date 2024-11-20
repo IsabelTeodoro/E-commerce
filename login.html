@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="style.css">
-    
 </head>
 
 <body>
-
     <div class="login-container">
         <div class="login">
-          <form id="login-form" action="login.php" method="POST">
+          <form id="login-form">
             <label for="username">Usuário:</label>
             <input type="text" id="username" name="username" required>
     
@@ -24,5 +22,40 @@
           <button type="button" onclick="window.location.href='cadastro.html'">Cadastrar</button>
         </div>
       </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginForm = document.getElementById("login-form");
+
+            // Função para carregar cadastros do localStorage
+            function carregarCadastros() {
+                const cadastros = localStorage.getItem("cadastros");
+                return cadastros ? JSON.parse(cadastros) : [];
+            }
+
+            // Evento para processar o login
+            loginForm.addEventListener("submit", (event) => {
+                event.preventDefault(); // Impede o envio do formulário
+
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+
+                const cadastros = carregarCadastros();
+
+                // Verifica se existe um cadastro com o username e senha fornecidos
+                const usuarioValido = cadastros.find(cadastro => 
+                    cadastro.usuario === username && cadastro.senha === password
+                );
+
+                if (usuarioValido) {
+                    alert("Login bem-sucedido! Bem-vindo(a), " + usuarioValido.nome);
+                    // Redirecionar para outra página, se necessário
+                    window.location.href = "index.html";
+                } else {
+                    alert("Usuário ou senha incorretos. Tente novamente.");
+                }
+            });
+        });
+    </script>
 </body>
 </html>
